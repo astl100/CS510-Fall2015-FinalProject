@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include "cplane.h"
 
 //constructor
-CPLANE setting(const long double xmin, const long double xmax, const long double ymin, const long double ymax, const unsigned long int xpoints, const unsigned long int ypoints)
+CPLANE cplane_setting(const long double xmin, const long double xmax, const long double ymin, const long double ymax, const unsigned long int xpoints, const unsigned long int ypoints)
 {
 	CPLANE a;
 	a.xmin = xmin;
@@ -26,21 +27,62 @@ CPLANE setting(const long double xmin, const long double xmax, const long double
         {fprintf(stderr, "No X steps\n");}
 	if (ypoints == 0) 
         {fprintf(stderr, "No Y steps\n");}
-	dx = (xmax-min)/xpoints;
-	dy = (ymax-ymin)/ypoins;
-	for(i=0;i[xpoints]; i++)
+	dx = (xmax-xmin)/xpoints;
+	dy = (ymax-ymin)/ypoints;
+
+	long double x_comp, y_comp;
+
+	for(i=0;i<(xpoints); i++)
 	{
-		for(j=0;j[ypoints];j++)
+		for(j=0;j<(ypoints);j++)
 		{
-			m[i][j] = complex_setting(xmin+i*dx,ymin+j*dy);
+			x_comp = xmin + i*dx;
+			y_comp = ymin + j*dy;
+			m[i][j] = complex_setting(x_comp, y_comp);
 		}
 	}
-	c.mat=&m;
-	if (c.mat == NULL) 
+	a.mat = &m;
+	if (a.mat == NULL) 
 	{
 	fprintf(stderr, "Failed to allocate new_matrix\n");
 	}
 	return a;
 }
 
+//cplane.h should have #define MAXITER 256 at the top
+
+int iterate(COMPLEX z, COMPLEX c)
+{
+	COMPLEX y;      
+	unsigned int out;
+
+	for (out = 0; out < MAXITER; out++)
+	{
+		y = juliamap(z, c);
+
+		if (sqrt(y.x*y.x + y.y*y.y) > 2)                      			{return out;}
+	}                                                       
+
+	return 0;                                        
+}
+
+void cplane_iterate(CPLANE cp, COMPLEX c)
+{
+        int i,j;
+	int amount_it;
+	COMPLEX z;
+
+        for(i=0;i<cp.xpoints; i++)
+	{
+		for(j=0;j<cp.ypoints; j++)
+		{
+			z = cp[i][j];
+                	amount_it = iterate(z, c);
+
+			//printf("%Lg, %Lg, %o\n", z.x, z.y, amount_it);
+		}
+        }
+
+        printf("%Lg, %Lg, %o\n",z.x, z.y, amount_it);
+}
 

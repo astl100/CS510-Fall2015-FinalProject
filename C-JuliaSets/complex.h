@@ -6,6 +6,7 @@ typedef struct complex
 } COMPLEX;
 
 //function definitions
+COMPLEX complex_setting(const long double x, const long double y);
 COMPLEX mult2(const COMPLEX *, const COMPLEX *);
 COMPLEX square(const COMPLEX *);
 COMPLEX add2(const COMPLEX *, const COMPLEX *);
