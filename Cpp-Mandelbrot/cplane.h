@@ -1,10 +1,13 @@
-include "complex.h"
 #define MAXITER 256
+#include <boost/numeric/ublas/matrix.hpp>
+#include <boost/numeric/ublas/io.hpp>
 
-//define structure cplane --> CPLANE
-
-typedef struct cplane
+//creating cplane class with pulic var.
+class cplane
 {
+public:
+	boost::numeric::ublas::matrix<std::complex<long double> > complex_plane;
+
         long double xmin;
         long double xmax;
         long double ymin;
@@ -12,18 +15,15 @@ typedef struct cplane
         unsigned long int xpoints;
         unsigned long int ypoints;
 
-        COMPLEX **mat;
+	//function definitions
+	cplane(const long double xmin, const long double xmax, const long double ymin, const long double ymax, const unsigned long int xpoints, const unsigned long int ypoints);
+	std::complex<long double> mult2(const std::complex<long double> *s, const std::complex<long double> *t);
+	std::complex<long double> square(const std::complex<long double> *f);
+	std::complex<long double> add2(const std::complex<long double> *u, const std::complex<long double> *v);
+	std::complex<long double> juliamap(const std::complex<long double> *g, const std::complex<long double> *r);
+	char * complex_print(const std::complex<long double> z);
+	char * test(const std::complex<long double> *a, const std::complex<long double> *b);
+	int iterate(std::complex<long double> z, std::complex<long double> c);
+	void iterate(std::complex<long double> c);
 
-} CPLANE;
-
-//function definitions
-COMPLEX cplane_setting(const long double xmin, const long double xmax, const long double ymin, const long double ymax, const unsigned long int xpoints, const unsigned long int ypoints);
-COMPLEX mult2(const COMPLEX *, const COMPLEX *);
-COMPLEX square(const COMPLEX *);
-COMPLEX add2(const COMPLEX *, const COMPLEX *);
-COMPLEX juliamap(const COMPLEX *, const COMPLEX *);
-char * complex_print(const COMPLEX z);
-char * test(const COMPLEX *a, const COMPLEX *b);
-int iterate(COMPLEX z, COMPLEX c);
-void cplane_iterate(CPLANE cp, COMPLEX c);
-
+};

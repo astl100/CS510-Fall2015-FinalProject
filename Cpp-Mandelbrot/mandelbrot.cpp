@@ -19,13 +19,23 @@ int main(int argc, char **argv)
         sscanf(argv[7], "%Lg", &creal);
         sscanf(argv[8], "%Lg", &cimag);
 
+	/*create a complex number 
+ 	*       one command line argument is the real portion
+ 	*       another command line argumant is the imaginary portionn
+ 	* create a complex plane
+ 	*       use first 6 command line aruments as parameters for the creation of the plane*/
         std::complex<long double> *c = new std::complex<long double>(creal, cimag);
         
 	cplane * p = new cplane(xmin, xmax, ymin, ymax, xpoints, ypoints);
 
+	/*outputs the amount of iterations take to:
+ 	*       reach a magnitude greater than 2
+ 	*       OR reach the max amount of iterations
+ 	*this is done for every coordinate on the complex plane*/
         //p->iterate(c);
 	p->iterate(0,c);
 
+	//destroy pointers
 	delete c;
 	delete p;
 	return 0;

@@ -1,5 +1,6 @@
 #include "cplane.hpp"
 
+//creates class Julia
 class Julia
 {
 public:
