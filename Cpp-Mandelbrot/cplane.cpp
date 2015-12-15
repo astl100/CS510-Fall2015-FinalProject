@@ -2,20 +2,20 @@
 #include <stdlib.h>
 #include <math.h>
 #include "cplane.h"
+#include <boost/numeric/ublas/cplane.hpp>
+#include <boost/numeric/ublas/io.hpp>
 
-//constructor
-boost::numeric::ublas::matrix<std::complex<long double>> cplane_setting(const long double xmin, const long double xmax, const long double ymin, const long double ymax, const unsigned long int xpoints, const unsigned long int ypoints)
+//constructoe
+cplane::cplane(const long double xmin, const long double xmax, const long double ymin, const long double ymax, const unsigned long int xpoints, const unsigned long int ypoints)
 {
-        boost::numeric::ublas::matrix<std::complex<long double> > a;
-        a.xmin = xmin;
-        a.xmax = xmax;
-        a.ymin = ymin;
-        a.ymax = ymax;
+        complex_plane.xmin = xmin;
+        complex_plane.xmax = xmax;
+        complex_plane.ymin = ymin;
+        complex_plane.ymax = ymax;
 
-        a.xpoints = xpoints;
-        a.ypoints = ypoints;
+        complex_plane.xpoints = xpoints;
+        complex_plane.ypoints = ypoints;
 
-        std::complex<long double> m[xpoints][ypoints];
         int i,j;
         long double dx, dy;
         if (xmax <= xmin)
@@ -38,20 +38,19 @@ boost::numeric::ublas::matrix<std::complex<long double>> cplane_setting(const lo
                 {
                         x_comp = xmin + i*dx;
                         y_comp = ymin + j*dy;
-                        m[i][j] = complex_setting(x_comp, y_comp);
+                        m[i][j] = std::complex<long double>(x_comp, y_comp);
                 }
         }
-        a.mat = &m;
-        if (a.mat == NULL)
+        complex_plane.mat = &m;
+        if (complex_plane.mat == NULL)
         {
         fprintf(stderr, "Failed to allocate new_matrix\n");
         }
-        return a;
 }
 
 //cplane.h should have #define MAXITER 256 at the top
 
-int iterate(std::complex<long double> z, std::complex<long double> c)
+int cplane::iterate(std::complex<long double> z, std::complex<long double> c)
 {
         std::complex<long double> y;
         unsigned int out;
@@ -66,17 +65,17 @@ int iterate(std::complex<long double> z, std::complex<long double> c)
         return 0;
 }
 
-void cplane_iterate(boost::numeric::ublas::matrix<std::complex<long double> > cp, std::complex<long double> c)
+void cplane::iterate(std::complex<long double> c)
 {
         int i,j;
         int amount_it;
 
-        for(i=0;i<cp.xpoints; i++)
+        for(i=0;i<complex_plane.xpoints; i++)
         {
-                for(j=0;j<cp.ypoints; j++)
+                for(j=0;j<complex_plane.ypoints; j++)
                 {
                         std::complex<long double> z;
-                        z = cp[i][j];
+                        z = complex_plane[i][j];
                         amount_it = iterate(z, c);
                 }
         }

@@ -1,37 +1,13 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include "julia.h"
+#include "cplane.hpp"
 #include <math.h>
-#include "cplane.h"
 
-int iterate(COMPLEX z, COMPLEX c)
-{
-        COMPLEX y;
-        unsigned int out;
+Julia::Julia() {}
 
-        for (out = 0; out < MAXITER; out++)
-        {
-                y = juliamap(z, c);
+std::complex<long double> juliamap(const std::complex<long double> *c, const std::complex<long double> *z)
+    {
+        std::complex<long double> b;        
+	b = pow(z, 2) + c;
+        return b;
+    }
 
-                if (sqrt(y.x*y.x + y.y*y.y) > 2)                                        {return out;}
-        }
-
-        return 0;
-}
-
-void cplane_iterate(CPLANE cp, COMPLEX c) 
-{
-        int i,j;
-        int amount_it;
-
-        for(i=0;i<cp.xpoints; i++)
-        {
-                for(j=0;j<cp.ypoints; j++)
-                {
-                        COMPLEX z; 
-                        z = cp[i][j]; 
-                        amount_it = iterate(z, c);
-                }
-        }
-    
-        printf("%Lg, %Lg, %o\n",z.x, z.y, amount_it);
-} 
