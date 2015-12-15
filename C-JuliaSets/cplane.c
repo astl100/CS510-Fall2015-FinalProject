@@ -3,7 +3,7 @@
 #include <math.h>
 #include "cplane.h"
 
-//constructor
+//constructor initializing cplane in a sensible way
 CPLANE cplane_setting(const long double xmin, const long double xmax, const long double ymin, const long double ymax, const unsigned long int xpoints, const unsigned long int ypoints)
 {
 	CPLANE a;
@@ -14,24 +14,28 @@ CPLANE cplane_setting(const long double xmin, const long double xmax, const long
 
 	a.xpoints = xpoints;
 	a.ypoints = ypoints;
-
-	int i,j;
-	long double dx, dy;
+	
+	//checks to see if valid parameters
 	if (xmax <= xmin) 
-        {fprintf(stderr, "Failure with xmax inreference to xmin\n");}
+        	{fprintf(stderr, "Failure with xmax inreference to xmin\n");}
 	if (ymax <= ymin) 
-        {fprintf(stderr, "Failure with ymax inreference to ymin\n");}
-
+        	{fprintf(stderr, "Failure with ymax inreference to ymin\n");}
 	if (xpoints == 0) 
-        {fprintf(stderr, "No X steps\n");}
+        	{fprintf(stderr, "No X steps\n");}
 	if (ypoints == 0) 
-        {fprintf(stderr, "No Y steps\n");}
+        	{fprintf(stderr, "No Y steps\n");}
+	
+	//define variables and calculate each step(dx, dy)
+	int i,j;
+        long double dx, dy;	
+
 	dx = (xmax-xmin)/xpoints;
 	dy = (ymax-ymin)/ypoints;
 
 	long double x_comp, y_comp;
 	COMPLEX **m;
 
+	//set a complex number at each coordinate of the complex plane
 	for(i=0;i<(xpoints); i++)
 	{
 		for(j=0;j<(ypoints);j++)
@@ -49,8 +53,9 @@ CPLANE cplane_setting(const long double xmin, const long double xmax, const long
 	return a;
 }
 
-//cplane.h should have #define MAXITER 256 at the top
-
+/*calculates z^2 + c for every (z,c) given
+  *	loops until the max number of iterations is reaches
+  *	OR the magnitude is greater than 2*/
 int iterate(COMPLEX *z, COMPLEX *c)
 {
 	COMPLEX y;      
@@ -66,6 +71,8 @@ int iterate(COMPLEX *z, COMPLEX *c)
 	return 0;                                        
 }
 
+/*iterates through every complex number in the complex plane
+ * applies iterate function above to every coordinate*/
 void cplane_iterate(CPLANE cp, COMPLEX *c)
 {
         int i,j;
