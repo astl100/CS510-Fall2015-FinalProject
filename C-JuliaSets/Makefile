@@ -4,6 +4,6 @@ julia: cplane.o
 
 run: all
 	./julia
-
-clean:
+	
+clean: 
 	rm -f julia cplane.o

@@ -23,6 +23,6 @@ COMPLEX add2(const COMPLEX *, const COMPLEX *);
 COMPLEX juliamap(const COMPLEX *, const COMPLEX *);
 char * complex_print(const COMPLEX z);
 char * test(const COMPLEX *a, const COMPLEX *b);
-int iterate(COMPLEX z, COMPLEX c);
-void cplane_iterate(CPLANE cp, COMPLEX c);
+int iterate(COMPLEX *z, COMPLEX *c);
+void cplane_iterate(CPLANE p, COMPLEX *c);
 

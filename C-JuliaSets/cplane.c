@@ -15,7 +15,6 @@ CPLANE cplane_setting(const long double xmin, const long double xmax, const long
 	a.xpoints = xpoints;
 	a.ypoints = ypoints;
 
-	COMPLEX m[xpoints][ypoints];
 	int i,j;
 	long double dx, dy;
 	if (xmax <= xmin) 
@@ -31,6 +30,7 @@ CPLANE cplane_setting(const long double xmin, const long double xmax, const long
 	dy = (ymax-ymin)/ypoints;
 
 	long double x_comp, y_comp;
+	COMPLEX **m;
 
 	for(i=0;i<(xpoints); i++)
 	{
@@ -51,7 +51,7 @@ CPLANE cplane_setting(const long double xmin, const long double xmax, const long
 
 //cplane.h should have #define MAXITER 256 at the top
 
-int iterate(COMPLEX z, COMPLEX c)
+int iterate(COMPLEX *z, COMPLEX *c)
 {
 	COMPLEX y;      
 	unsigned int out;
@@ -66,7 +66,7 @@ int iterate(COMPLEX z, COMPLEX c)
 	return 0;                                        
 }
 
-void cplane_iterate(CPLANE cp, COMPLEX c)
+void cplane_iterate(CPLANE cp, COMPLEX *c)
 {
         int i,j;
 	int amount_it;
@@ -77,9 +77,7 @@ void cplane_iterate(CPLANE cp, COMPLEX c)
 		for(j=0;j<cp.ypoints; j++)
 		{
 			z = cp[i][j];
-                	amount_it = iterate(z, c);
-
-			//printf("%Lg, %Lg, %o\n", z.x, z.y, amount_it);
+                	amount_it = iterate(&z, c);
 		}
         }
 
