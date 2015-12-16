@@ -1,4 +1,7 @@
 #include "complex.h"
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
 #define MAXITER 256
 
 //define structure cplane --> CPLANE
@@ -24,5 +27,6 @@ COMPLEX juliamap(const COMPLEX *, const COMPLEX *);
 char * complex_print(const COMPLEX z);
 char * test(const COMPLEX *a, const COMPLEX *b);
 int iterate(COMPLEX *z, COMPLEX *c);
-void cplane_iterate(CPLANE p, COMPLEX *c);
+void cplane_iterate(CPLANE *p, COMPLEX *c);
+
 

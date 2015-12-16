@@ -23,7 +23,7 @@ public:
 	std::complex<long double> juliamap(const std::complex<long double> *g, const std::complex<long double> *r);
 	char * complex_print(const std::complex<long double> z);
 	char * test(const std::complex<long double> *a, const std::complex<long double> *b);
-	int iterate(std::complex<long double> z, std::complex<long double> c);
-	void iterate(std::complex<long double> c);
+	int iterate(std::complex<long double> *z, std::complex<long double> *c);
+	void iterate(std::complex<long double> *c);
 
 };

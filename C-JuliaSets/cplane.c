@@ -11,9 +11,10 @@ CPLANE cplane_setting(const long double xmin, const long double xmax, const long
 	a.xmax = xmax;
 	a.ymin = ymin;
 	a.ymax = ymax;
+	//printf("%Lg %Lg\n", ymin, ymax);
 
 	a.xpoints = xpoints;
-	a.ypoints = ypoints;
+	a.ypoints = ypoints;	
 	
 	//checks to see if valid parameters
 	if (xmax <= xmin) 
@@ -33,11 +34,13 @@ CPLANE cplane_setting(const long double xmin, const long double xmax, const long
 	dy = (ymax-ymin)/ypoints;
 
 	long double x_comp, y_comp;
-	COMPLEX **m;
+	//COMPLEX m[xpoints][ypoints];
 
 	//set a complex number at each coordinate of the complex plane
+	COMPLEX **m = (COMPLEX **)calloc(xpoints, sizeof(COMPLEX *));
 	for(i=0;i<(xpoints); i++)
 	{
+		m[i] = (COMPLEX *)calloc(ypoints, sizeof(COMPLEX));
 		for(j=0;j<(ypoints);j++)
 		{
 			x_comp = xmin + i*dx;
@@ -45,7 +48,7 @@ CPLANE cplane_setting(const long double xmin, const long double xmax, const long
 			m[i][j] = complex_setting(x_comp, y_comp);
 		}
 	}
-	a.mat = &m;
+	a.mat = m;
 	if (a.mat == NULL) 
 	{
 	fprintf(stderr, "Failed to allocate new_matrix\n");
@@ -58,14 +61,15 @@ CPLANE cplane_setting(const long double xmin, const long double xmax, const long
   *	OR the magnitude is greater than 2*/
 int iterate(COMPLEX *z, COMPLEX *c)
 {
-	COMPLEX y;      
+	COMPLEX y = *z;      
 	unsigned int out;
-
-	for (out = 0; out < MAXITER; out++)
+	long double norm;
+	
+	for (out = 1; out < MAXITER; out++)
 	{
-		y = juliamap(z, c);
-
-		if (sqrt(y.x*y.x + y.y*y.y) > 2)                      			{return out;}
+		norm = sqrtl(y.x*y.x + y.y*y.y);
+		if (norm > 2)                      			{return out;}
+		y = juliamap(&y, c);
 	}                                                       
 
 	return 0;                                        
@@ -73,21 +77,22 @@ int iterate(COMPLEX *z, COMPLEX *c)
 
 /*iterates through every complex number in the complex plane
  * applies iterate function above to every coordinate*/
-void cplane_iterate(CPLANE cp, COMPLEX *c)
+void cplane_iterate(CPLANE *cp, COMPLEX *c)
 {
         int i,j;
 	int amount_it;
 	COMPLEX z;
 
-        for(i=0;i<cp.xpoints; i++)
+        for(i=0;i<(*cp).xpoints; i++)
 	{
-		for(j=0;j<cp.ypoints; j++)
+		for(j=0;j<(*cp).ypoints; j++)
 		{
-			z = cp[i][j];
+			z = (*cp).mat[i][j];
                 	amount_it = iterate(&z, c);
+			printf("%Lg, %Lg, %o\n", z.x, z.y, amount_it);
 		}
         }
 
-        printf("%Lg, %Lg, %o\n",z.x, z.y, amount_it);
 }
+
 
