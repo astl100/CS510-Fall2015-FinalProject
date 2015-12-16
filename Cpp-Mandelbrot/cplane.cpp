@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include "cplane.h"
-#include <boost/numeric/ublas/cplane.hpp>
+#include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/io.hpp>
 
 //constructor initializing cplane in a sensible way
@@ -33,6 +33,7 @@ cplane::cplane(const long double xmin, const long double xmax, const long double
         dy = (ymax-ymin)/ypoints;
 
         long double x_comp, y_comp;
+	std::complex<long double> m[xpoints][ypoints];
 
 	/*set a complex number at each coordinate of the complex plane*/
         for(i=0;i<(xpoints); i++)
@@ -44,7 +45,7 @@ cplane::cplane(const long double xmin, const long double xmax, const long double
                         m[i][j] = std::complex<long double>(x_comp, y_comp);
                 }
         }
-        complex_plane.mat = &m;
+        complex_plane.mat = m;
         if (complex_plane.mat == NULL)
         	{fprintf(stderr, "Failed to allocate new_matrix\n");}
 }
@@ -52,38 +53,39 @@ cplane::cplane(const long double xmin, const long double xmax, const long double
 /*calculates z^2 + c for every (z,c) given
  *   loops until the max number of iterations is reaches
  *     OR the magnitude is greater than 2*/
-int cplane::iterate(std::complex<long double> z, std::complex<long double> c)
+int cplane::iterate(std::complex<long double> *z, std::complex<long double> *c)
 {
-        std::complex<long double> y;
+        std::complex<long double> y = *z;
         unsigned int out;
 
-        for (out = 0; out < MAXITER; out++)
+        for (out = 1; out < MAXITER; out++)
         {
-                y = juliamap(z, c);
 
-                if (sqrt(y.x*y.x + y.y*y.y) > 2)                                        {return out;}
-        }
+                if (sqrtl(y.x*y.x + y.y*y.y) > 2)                                        {return out;}
+       		 
+                y = juliamap(&y, c);
+	}
 
         return 0;
 }
 
 /*iterates through every complex number in the complex plane
  *  * applies iterate function above to every coordinate*/
-void cplane::iterate(std::complex<long double> c)
+void cplane::iterate(std::complex<long double> *c)
 {
         int i,j;
         int amount_it;
 
-        for(i=0;i<complex_plane.xpoints; i++)
+        for(i=0;i<(*complex_plane).xpoints; i++)
         {
-                for(j=0;j<complex_plane.ypoints; j++)
+                for(j=0;j<(*complex_plane).ypoints; j++)
                 {
                         std::complex<long double> z;
-                        z = complex_plane[i][j];
-                        amount_it = iterate(z, c);
-                }
+                        z = (*complex_plane)[i][j];
+                        amount_it = iterate(&z, c);
+                	printf("%Lg, %Lg, %o\n",z.x, z.y, amount_it);
+		}
         }
 
-        printf("%Lg, %Lg, %o\n",z.x, z.y, amount_it);
 }
 
