@@ -1,9 +1,10 @@
+LDLIBS=-lm
 all: julia
 
-julia: cplane.o
+julia: cplane.o complex.o
 
 run: all
 	./julia
 	
 clean: 
-	rm -f julia cplane.o
+	rm -f julia cplane.o complex.o
