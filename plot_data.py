@@ -1,6 +1,4 @@
-#!/usr/bin/python
-
-import sys
+mport sys
 import os.path
 import pandas as pd
 import matplotlib
@@ -31,10 +29,11 @@ for i in y_t:
           y_vals.append(i)
 
 z_t = df['z']
-z_vals = np.reshape(z_t, (len(x_vals),len(y_vals)).T
+z_vals = np.reshape(z_t, (len(x_vals),len(y_vals))).T
 
-fig = plt.figure(1, figsize=(12,9))
+figu = plt.figure(1, figsize=(12,9))
 plt.pcolormesh(x_vals,y_vals,z_vals, cmap=plt.cm.hot)
 plt.colorbar()
 
-fig.savefig("./mandelbrot.jpg")
+figu.savefig("./mandelbrot.jpg")
+
