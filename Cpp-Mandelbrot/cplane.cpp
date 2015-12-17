@@ -4,6 +4,7 @@
 //constructor initializing cplane in a sensible way
 cplane::cplane(const long double _xmin, const long double _xmax, const long double _ymin, const long double _ymax, const unsigned long int _xpoints, const unsigned long int _ypoints)
 {
+        //initialize variables, left side of =
         xmin = _xmin;
         xmax = _xmax;
         ymin = _ymin;
@@ -30,6 +31,7 @@ cplane::cplane(const long double _xmin, const long double _xmax, const long doub
 
         long double x_comp, y_comp;
 	boost::numeric::ublas::matrix<std::complex<long double> > m(xpoints, ypoints);
+    //2D array notation in C++ uses (x, y) to access
 
 	/*set a complex number at each coordinate of the complex plane*/
         for(i=0;i<(xpoints); i++)

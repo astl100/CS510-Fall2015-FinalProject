@@ -9,7 +9,6 @@ CPLANE cplane_setting(const long double xmin, const long double xmax, const long
 	a.xmax = xmax;
 	a.ymin = ymin;
 	a.ymax = ymax;
-	//printf("%Lg %Lg\n", ymin, ymax);
 
 	a.xpoints = xpoints;
 	a.ypoints = ypoints;	
@@ -32,7 +31,6 @@ CPLANE cplane_setting(const long double xmin, const long double xmax, const long
 	dy = (ymax-ymin)/ypoints;
 
 	long double x_comp, y_comp;
-	//COMPLEX m[xpoints][ypoints];
 
 	//set a complex number at each coordinate of the complex plane
 	COMPLEX **m = (COMPLEX **)calloc(xpoints, sizeof(COMPLEX *));
@@ -50,6 +48,7 @@ CPLANE cplane_setting(const long double xmin, const long double xmax, const long
 	if (a.mat == NULL) 
 	{
 	fprintf(stderr, "Failed to allocate new_matrix\n");
+        //fprintf is specific to C
 	}
 	return a;
 }
