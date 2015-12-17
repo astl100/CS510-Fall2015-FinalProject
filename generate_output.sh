@@ -2,8 +2,9 @@
 
 #This is a comment
 
-
 cd C-JuliaSets
+
+make clean
 
 make
 
@@ -18,5 +19,6 @@ make clean
 make
 
 ./mandelbrot -2 2 -2 2 1000 1000 > mandelbrot.csv
+
 
 
