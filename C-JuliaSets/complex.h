@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <stdlib.h>
+
 //define structure complex-->COMPLEX
 typedef struct complex
 {

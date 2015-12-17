@@ -1,5 +1,3 @@
-#include <stdio.h>
-//cplane.h implicitly includes complex.h
 #include "cplane.h"
 
 

@@ -20,12 +20,6 @@ typedef struct cplane
 
 //function definitions
 CPLANE cplane_setting(const long double xmin, const long double xmax, const long double ymin, const long double ymax, const unsigned long int xpoints, const unsigned long int ypoints);
-COMPLEX mult2(const COMPLEX *, const COMPLEX *);
-COMPLEX square(const COMPLEX *);
-COMPLEX add2(const COMPLEX *, const COMPLEX *);
-COMPLEX juliamap(const COMPLEX *, const COMPLEX *);
-char * complex_print(const COMPLEX z);
-char * test(const COMPLEX *a, const COMPLEX *b);
 int iterate(COMPLEX *z, COMPLEX *c);
 void cplane_iterate(CPLANE *p, COMPLEX *c);
 

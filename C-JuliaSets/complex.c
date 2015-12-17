@@ -1,5 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
+
 #include "complex.h"
 
 //functions
@@ -35,10 +34,10 @@ COMPLEX add2(const COMPLEX *a, const COMPLEX *b)
     	return c;
     }
 	
-COMPLEX juliamap(const COMPLEX *c, const COMPLEX *z)
+COMPLEX juliamap(const COMPLEX *z, const COMPLEX *c)
     {
         COMPLEX b,m;
-	m = square(z);
+	    m = square(z);
     	b = add2(&m, c);
     	return b;
     }
